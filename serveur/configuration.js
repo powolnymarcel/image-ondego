@@ -3,10 +3,15 @@
 // Une fn pourra accepter l'objet exporté en tant que paramètre
 var path = require('path'),
 	routes = require('./routes'),
+	//Moteur de templating comme jade
 	exphbs = require('express-handlebars'),
 	express = require('express'),
+	//parse le contenu d'un form submité via POST
+	//Sera accessible via req.body   ou req.bodè si t'es de Liège :p
 	bodyParser = require('body-parser'),
+	//permet l'envoie et la reception de cookie
 	cookieParser = require('cookie-parser'),
+	//morgan pour le débug 'facile'
 	morgan = require('morgan'),
 	methodOverride = require('method-override'),
 	errorHandler = require('errorhandler');
