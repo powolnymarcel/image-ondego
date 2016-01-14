@@ -14,8 +14,22 @@ var path = require('path'),
 	//morgan pour le débug 'facile'
 	morgan = require('morgan'),
 	methodOverride = require('method-override'),
-	errorHandler = require('errorhandler');
+	errorHandler = require('errorhandler'),
+	//Formattage date heure
+	moment = require('moment');
 module.exports = function(app) {
+	app.engine('handlebars', exphbs.create({
+		defaultLayout: 'main',
+		layoutsDir: app.get('views') + '/layouts',
+		partialsDir: [app.get('views') + '/partials'],
+		helpers: {
+			timeago: function(timestamp) {
+				return moment(timestamp).startOf('minute').fromNow();
+			}
+		}
+	}).engine);
+	app.set('view engine', 'handlebars');
+
 	app.use(morgan('dev'));
 	app.use(bodyParser.urlencoded({'extended':true}));
 	app.use(bodyParser.json());
@@ -23,13 +37,16 @@ module.exports = function(app) {
 	app.use(cookieParser('MaSuperCleSecrete007'));
 
 	//Permet d'avoir un folder pour les asset statiques (js, images, html...)
-	app.use('/public/', express.static(path.join(__dirname,
-		'../public')));
+	app.use('/public/', express.static(path.join(__dirname,'../public')));
 	if ('development' === app.get('env')) {
 		app.use(errorHandler());
 	}
 
-	//indique que l'on utilise un router avec l'app
+
+//indique que l'on utilise un router avec l'app
 	routes(app);
+
+
+
 	return app;
 };

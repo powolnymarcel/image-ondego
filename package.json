@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/powolnymarcel/image-ondego/issues"
   },
-  "homepage": "https://github.com/powolnymarcel/image-ondego#readme"
+  "homepage": "https://github.com/powolnymarcel/image-ondego#readme",
+  "dependencies": {
+    "moment": "^2.11.1"
+  }
 }
