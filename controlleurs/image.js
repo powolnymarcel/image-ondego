@@ -1,6 +1,6 @@
 var fs = require('fs'),
-	path = require('path');
-
+	path = require('path'),
+ sidebar = require('../helpers/sidebar');
 module.exports = {
 	index: function(req, res) {
 		var viewModel = {
@@ -31,7 +31,9 @@ module.exports = {
 				}
 			]
 		};
-		res.render('image', viewModel);
+		sidebar(viewModel, function(viewModel) {
+			res.render('image', viewModel);
+		});
 	},
 	create: function(req, res) {
 		var sauvegarderImage = function() {
@@ -74,7 +76,7 @@ module.exports = {
 		sauvegarderImage();
 	},
 	like: function(req, res) {
-		res.send('The image:like POST controller');
+		res.json({likes: 1});
 	},
 	commentaire: function(req, res) {
 		res.send('The image:comment POST controller');
