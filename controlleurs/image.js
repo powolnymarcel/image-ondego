@@ -57,12 +57,14 @@ module.exports = {
 				'.gif') {
 				//param 1 = dossier temporaire
 				//param2 = dossier cible
+				//On transfère l'img du dossier temp vers dossier final
 				fs.rename(tempPath, targetPath, function(err) {
 					if (err) throw err;
 					//Si ok on transfère vers la pagede l'image
 					res.redirect('/images/'+ imgUrl);
 				});
 			} else {
+				//Si erreur on annule l'image dans le dossier temp et on lance une erreur
 				fs.unlink(tempPath, function (err) {
 					if (err) throw err;
 					res.json(500, {error: 'Uniquement des images png jpeg ou gif svp'});
