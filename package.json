@@ -1,0 +1,19 @@
+{
+  "name": "image-ondego",
+  "version": "1.0.0",
+  "description": "plateforme upload images",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/powolnymarcel/image-ondego.git"
+  },
+  "author": "poma",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/powolnymarcel/image-ondego/issues"
+  },
+  "homepage": "https://github.com/powolnymarcel/image-ondego#readme"
+}
