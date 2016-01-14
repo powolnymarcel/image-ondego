@@ -18,16 +18,18 @@ var path = require('path'),
 module.exports = function(app) {
 	app.use(morgan('dev'));
 	app.use(bodyParser.urlencoded({'extended':true}));
-	app.use(bodyparser.json());
+	app.use(bodyParser.json());
 	app.use(methodOverride());
 	app.use(cookieParser('MaSuperCleSecrete007'));
-	//indique que l'on utilise un router avec l'app
-	routes(app);
+
 	//Permet d'avoir un folder pour les asset statiques (js, images, html...)
 	app.use('/public/', express.static(path.join(__dirname,
 		'../public')));
 	if ('development' === app.get('env')) {
 		app.use(errorHandler());
 	}
+
+	//indique que l'on utilise un router avec l'app
+	routes(app);
 	return app;
 };

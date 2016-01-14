@@ -1,11 +1,12 @@
 var express = require('express'),
-// config = require('./server/configure'),
+	//Ou se trouvent les modules
+ config = require('./serveur/configuration'),
 	app = express();
 
 
 app.set('port', process.env.PORT || 3300);
 app.set('views', __dirname + '/vues');
-// app = config(app);
+ app = config(app);
 
 
 app.get('/', function(req, res){
