@@ -16,7 +16,10 @@ var path = require('path'),
 	methodOverride = require('method-override'),
 	errorHandler = require('errorhandler'),
 	//Formattage date heure
-	moment = require('moment');
+	moment = require('moment'),
+	//pour le upload
+	multer = require('multer');
+
 module.exports = function(app) {
 	app.engine('handlebars', exphbs.create({
 		defaultLayout: 'main',
@@ -29,10 +32,11 @@ module.exports = function(app) {
 		}
 	}).engine);
 	app.set('view engine', 'handlebars');
-
 	app.use(morgan('dev'));
 	app.use(bodyParser.urlencoded({'extended':true}));
 	app.use(bodyParser.json());
+	app.use(multer({ dest: path.join(__dirname,'public/upload/temp'),
+		limits: {fileSize: 1000000, files:1}}).single('file'));
 	app.use(methodOverride());
 	app.use(cookieParser('MaSuperCleSecrete007'));
 

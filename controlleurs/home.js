@@ -9,7 +9,7 @@ module.exports = {
 					filename: 'sample1.jpg',
 					vues: 0,
 					likes: 0,
-					timestamp: Date.now
+					timestamp: Date.now()
 				}, {
 					uniqueId: 2,
 					titre: 'Sample Image 2',
@@ -17,7 +17,7 @@ module.exports = {
 					filename: 'sample2.jpg',
 					vues: 0,
 					likes: 0,
-					timestamp: Date.now
+					timestamp: Date.now()
 				}, {
 					uniqueId: 3,
 					titre: 'Sample Image 3',
@@ -25,14 +25,14 @@ module.exports = {
 					filename: 'sample3.jpg',
 					vues: 0,
 					likes: 0,
-					timestamp: Date.now
+					timestamp: Date.now()
 				}, {uniqueId: 4,
 					titre: 'Sample Image 4',
 					description: '',
 					filename: 'sample4.jpg',
 					vues: 0,
 					likes: 0,
-					timestamp: Date.now
+					timestamp: Date.now()
 				}
 			]
 		};
