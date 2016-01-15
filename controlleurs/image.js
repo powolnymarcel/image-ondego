@@ -1,7 +1,7 @@
 var fs = require('fs'),
 	path = require('path'),
  sidebar = require('../helpers/sidebar'),
-Modeles = require('../modeles');
+Modeles = require('../modeles'),md5 = require('MD5');
 module.exports = {
 	index: function(req, res) {
 		var viewModel = {
