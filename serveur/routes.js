@@ -8,5 +8,6 @@ module.exports = function(app) {
 	router.post('/images', image.create);
 	router.post('/images/:image_id/like', image.like);
 	router.post('/images/:image_id/commentaire', image.commentaire);
+	router.delete('/images/:image_id', image.supprimerImage);
 	app.use(router);
 };

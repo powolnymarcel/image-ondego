@@ -18,7 +18,25 @@ $(function(){
 
 
 
-
+	$('#btn-delete').on('click', function(event) {
+		event.preventDefault();
+		var $this = $(this);
+		var remove = confirm('Etes vous sur de vouloir supprimer l\'image ?');
+		if (remove) {
+			var imgId = $(this).data('id');
+			$.ajax({
+				url: '/images/' + imgId,
+				type: 'DELETE'
+			}).done(function(result) {
+				if (result) {
+					$this.removeClass('btn-danger').addClass('btnsuccess');
+					$this.find('i').removeClass('fa-times').
+					addClass('fa-check');
+					$this.append('<span> Supprimée!</span>');
+				}
+			});
+		}
+	});
 
 
 
