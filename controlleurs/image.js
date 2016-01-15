@@ -8,7 +8,7 @@ module.exports = {
 			image: {},
 			commentaires: []
 		};
-		Models.Image.findOne({ filename: { $regex: req.params.image_id }
+		Modeles.Image.findOne({ filename: { $regex: req.params.image_id }
 			},
 			function(err, image) {
 				if (err) { throw err; }
@@ -16,6 +16,16 @@ module.exports = {
 					image.vues = image.vues + 1;
 					viewModel.image = image;
 					image.save();
+					Modeles.Commentaire.find({ image_id: image._id}, {}, { sort: {
+							'timestamp': 1 }},
+						function(err, commentaires){
+							if (err) { throw err; }
+							viewModel.commentaires = commentaires;
+							sidebar(viewModel, function(viewModel) {
+								res.render('image', viewModel);
+							});
+						}
+					);
 				} else {
 					res.redirect('/');
 				}
@@ -33,6 +43,11 @@ module.exports = {
 					possible.length));
 			}
 
+			//On cherche et vérifie si le nom aléatoire a déjà ete crée, si oui on relance la fn
+			Modeles.Image.find({ filename: imgUrl }, function(err, images) {
+				if (images.length> 0) {
+					sauvegarderImage();
+				} else {
 			//On déclare 3 variables Là ou seront stocké les images uploadée
 			//Ici on cherche l'adresse du dossier temp
 			var tempPath = req.file.path;
@@ -49,22 +64,60 @@ module.exports = {
 				fs.rename(tempPath, targetPath, function(err) {
 					if (err) throw err;
 					//Si ok on transfère vers la pagede l'image
-					res.redirect('/images/'+ imgUrl);
+					var newImg = new Modeles.Image({
+						titre: req.body.titre,
+						description: req.body.description,
+						filename: imgUrl + ext
+					});
+					newImg.save(function(err, image) {
+						console.log('Image uploadee avec succes: ' + image.filename);
+						res.redirect('/images/' + image.uniqueId);
+					});
 				});
 			} else {
 				//Si erreur on annule l'image dans le dossier temp et on lance une erreur
 				fs.unlink(tempPath, function (err) {
 					if (err) throw err;
-					res.json(500, {error: 'Uniquement des images png jpeg ou gif svp'});
+					res.json(500, {error: 'Only image files are allowed.'});
 				});
 			}
-		};
+			/* Start new code: */
+		}
+	});
+/* End new code: */
+};
 		sauvegarderImage();
 	},
 	like: function(req, res) {
-		res.json({likes: 1});
+		Modeles.Image.findOne({ filename: { $regex: req.params.image_id }
+			},
+			function(err, image) {
+				if (!err && image) {
+					image.likes = image.likes + 1;
+					image.save(function(err) {
+						if (err) {
+							res.json(err);
+						} else {
+							res.json({ likes: image.likes });
+						}
+					});
+				}
+			});
 	},
 	commentaire: function(req, res) {
-		res.send('The image:comment POST controller');
-	}
+		Modeles.Image.findOne({ filename: { $regex: req.params.image_id }
+			},
+			function(err, image) {
+				if (!err && image) {
+					var newComment = new Modeles.Commentaire(req.body);
+					newComment.gravatar = md5(newComment.email);
+					newComment.image_id = image._id;
+					newComment.save(function(err, commentaire) {
+						if (err) { throw err; }
+						res.redirect('/images/' + image.uniqueId + '#' + commentaire._id);
+					});
+				} else {
+					res.redirect('/');
+				}
+			});	}
 };
