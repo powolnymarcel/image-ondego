@@ -1,39 +1,25 @@
 var fs = require('fs'),
 	path = require('path'),
- sidebar = require('../helpers/sidebar');
+ sidebar = require('../helpers/sidebar'),
+Modeles = require('../modeles');
 module.exports = {
 	index: function(req, res) {
 		var viewModel = {
-			image: {
-				uniqueId: 1,
-				titre: 'Sample Image 1',
-				description: 'This is a sample.',
-				filename: 'sample1.jpg',
-				vues: 12,
-				likes: 0,
-				timestamp: Date.now()
-			},
-			commentaires: [
-				{
-					image_id: 1,
-					email: 'test@testing.com',
-					nom: 'Test Tester',
-					gravatar: 'http://lorempixel.com/75/75/animals/1',
-					commentaire: 'This is a test comment...',
-					timestamp: Date.now()
-				},{
-					image_id: 1,
-					email: 'test@testing.com',
-					nom: 'Test Tester',
-					gravatar: 'http://lorempixel.com/75/75/animals/2',
-					commentaire: 'Another followup comment!',
-					timestamp: Date.now()
-				}
-			]
+			image: {},
+			commentaires: []
 		};
-		sidebar(viewModel, function(viewModel) {
-			res.render('image', viewModel);
-		});
+		Models.Image.findOne({ filename: { $regex: req.params.image_id }
+			},
+			function(err, image) {
+				if (err) { throw err; }
+				if (image) {
+					image.vues = image.vues + 1;
+					viewModel.image = image;
+					image.save();
+				} else {
+					res.redirect('/');
+				}
+			});
 	},
 	create: function(req, res) {
 		var sauvegarderImage = function() {
